@@ -9,5 +9,9 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="show_sql">true</property>
 
+        <mapping class="ir.maktab32.java.homeworks.instagram.entities.Account"/>
+        <mapping class="ir.maktab32.java.homeworks.instagram.entities.Comment"/>
+        <mapping class="ir.maktab32.java.homeworks.instagram.entities.Post"/>
+
     </session-factory>
 </hibernate-configuration>
