@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -26,15 +27,36 @@ public class Account {
     private String accountImgSrc;
 
     @ManyToMany
-    @JoinTable(name = "follow", joinColumns = @JoinColumn(name = "following"), inverseJoinColumns = @JoinColumn(name = "follower"))
-    private List<Account> followers;
+    @JoinTable(name = "follow_tbl", joinColumns = @JoinColumn(name = "following_id"), inverseJoinColumns = @JoinColumn(name = "follower_id"))
+    private List<Account> followers = new ArrayList<>();
 
     @ManyToMany
-    @JoinTable(name = "follow", joinColumns = @JoinColumn(name = "follower"), inverseJoinColumns = @JoinColumn(name = "following"))
-    private List<Account> followings;
+    @JoinTable(name = "follow_tbl", joinColumns = @JoinColumn(name = "follower_id"), inverseJoinColumns = @JoinColumn(name = "following_id"))
+    private List<Account> followings = new ArrayList<>();
 
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private List<Post> posts = new ArrayList<>();
 
-    private List<Post> posts;
-    private List<Post> likedPosts;
+    @ManyToMany
+    @JoinTable(name = "like_tbl", joinColumns = @JoinColumn(name = "liker_id"), inverseJoinColumns = @JoinColumn(name = "post_id"))
+    private List<Post> likedPosts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
     private List<Comment> comments;
+
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", accountImgSrc='" + accountImgSrc + '\'' +
+                ", followers=" + followers.size() +
+                ", followings=" + followings.size() +
+                ", posts=" + posts.size() +
+                ", likedPosts=" + likedPosts.size() +
+                '}';
+    }
 }
