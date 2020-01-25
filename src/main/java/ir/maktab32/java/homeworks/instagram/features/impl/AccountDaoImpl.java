@@ -14,9 +14,14 @@ import java.util.List;
 
 public class AccountDaoImpl implements AccountDao {
     @Override
-    public Account add(Account account) {
+    public Account add(String username, String password, String screenName, String accountImg) {
         Account result;
-        if (addingValidation(account)){
+        if (addingValidation(username, password, screenName, accountImg)){
+            Account account = new Account();
+            account.setUsername(username);
+            account.setPassword(password);
+            account.setName(screenName);
+            account.setAccountImgSrc(accountImg);
             result = AccountRepository.getInstance().save(account);
             System.out.println("Account Added! Id = " + result.getId());
         }
@@ -28,10 +33,15 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public Account edit(Account account) {
+    public Account edit(String username, String password, String screenName, String accountImg) {
         Account result;
 
-        if (editingValidation(account)){
+        if (editingValidation(username, password, screenName, accountImg)){
+            Account account = AuthenticationService.getInstance().getSignedInUser();
+            account.setUsername(username);
+            account.setPassword(password);
+            account.setName(screenName);
+            account.setAccountImgSrc(accountImg);
             result = AccountRepository.getInstance().update(account);
             System.out.println("Account Edited!");
         }
@@ -169,14 +179,14 @@ public class AccountDaoImpl implements AccountDao {
         }
     }
 
-    private boolean addingValidation(Account account){
+    private boolean addingValidation(String username, String password, String screenName, String accountImg){
         boolean result = true;
-        if (account.getUsername() == null || account.getUsername().isEmpty()
-                || AccountRepository.getInstance().isUsernameExisting(account.getUsername())){
+        if (username == null || username.isEmpty()
+                || AccountRepository.getInstance().isUsernameExisting(username)){
             result = false;
             System.out.println("Invalid Username!");
         }
-        if (account.getPassword() == null || account.getPassword().isEmpty()){
+        if (password == null || password.isEmpty()){
             result = false;
             System.out.println("Invalid Password!");
         }
@@ -184,24 +194,20 @@ public class AccountDaoImpl implements AccountDao {
         return result;
     }
 
-    private boolean editingValidation(Account account){
+    private boolean editingValidation(String username, String password, String screenName, String accountImg){
         boolean result = true;
 
         Account currentUser = AuthenticationService.getInstance().getSignedInUser();
-        if (account.getId() == null || !AccountRepository.getInstance().isExisting(account.getId())){
+        if (currentUser == null){
             result = false;
-            System.out.println("Invalid Account Id!");
+            System.out.println("Sign In First!");
         }
-        else if (currentUser == null || currentUser.getId() != account.getId()){
-            result = false;
-            System.out.println("No Permission to Editing!");
-        }
-        if (account.getUsername() == null || account.getUsername().isEmpty()
-                || !AccountRepository.getInstance().isUsernameExisting(account.getUsername())){
+        else if (username == null || username.isEmpty()
+                || !AccountRepository.getInstance().isUsernameExisting(username)){
             result = false;
             System.out.println("Invalid Username!");
         }
-        if (account.getPassword() == null || account.getPassword().isEmpty()){
+        if (password == null || password.isEmpty()){
             result = false;
             System.out.println("Invalid Password!");
         }
