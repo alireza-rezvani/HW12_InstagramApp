@@ -54,6 +54,42 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
+    public Account signIn(String username, String password) {
+        Account result;
+        if (AuthenticationService.getInstance().getSignedInUser() == null) {
+            if (AccountRepository.getInstance().isUsernameExisting(username)) {
+                if (AccountRepository.getInstance().findByUsername(username).getPassword().equals(password)) {
+                    result = AccountRepository.getInstance().findByUsername(username);
+                    AuthenticationService.getInstance().setSignedInUser(result);
+                    System.out.println("Sign In Successful!");
+                } else {
+                    result = null;
+                    System.out.println("Invalid Password!");
+                }
+            } else {
+                result = null;
+                System.out.println("Username Doesn't Exist!");
+            }
+        }
+        else {
+            result = null;
+            System.out.println("You Are Signed In Already!");
+        }
+        return result;
+    }
+
+    @Override
+    public void signOut() {
+        if (AuthenticationService.getInstance().getSignedInUser() != null){
+            AuthenticationService.getInstance().setSignedInUser(null);
+            System.out.println("Sign Out Successful!");
+        }
+        else {
+            System.out.println("You Are Not Signed In!");
+        }
+    }
+
+    @Override
     public Account findById(Long id) {
         Account result;
         if (AccountRepository.getInstance().isExisting(id)){

@@ -7,6 +7,8 @@ import java.util.List;
 public interface AccountDao {
     Account add(String username, String password, String screenName, String accountImg);
     Account edit(String username, String password, String screenName, String accountImg);
+    Account signIn(String username, String password);
+    void signOut();
     Account findById(Long id);
     List<Account> findByUsername(String username);
     List<Account> findAll();
