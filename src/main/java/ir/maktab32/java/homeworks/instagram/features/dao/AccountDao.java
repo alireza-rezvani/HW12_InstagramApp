@@ -5,8 +5,8 @@ import ir.maktab32.java.homeworks.instagram.entities.Account;
 import java.util.List;
 
 public interface AccountDao {
-    Account add(Account account);
-    Account edit(Account account);
+    Account add(String username, String password, String screenName, String accountImg);
+    Account edit(String username, String password, String screenName, String accountImg);
     Account findById(Long id);
     List<Account> findByUsername(String username);
     List<Account> findAll();
