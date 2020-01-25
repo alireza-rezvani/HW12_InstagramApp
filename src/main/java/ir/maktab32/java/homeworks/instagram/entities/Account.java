@@ -31,7 +31,6 @@ public class Account {
     private List<Account> followers = new ArrayList<>() ;
 
     @ManyToMany(mappedBy = "followers")
-//    @JoinTable(name = "follow_tbl" ,joinColumns = @JoinColumn(name = "follower_id"), inverseJoinColumns = @JoinColumn(name = "following_id"))
     private List<Account> followings = new ArrayList<>() ;
 
     @OneToMany(mappedBy = "owner")
