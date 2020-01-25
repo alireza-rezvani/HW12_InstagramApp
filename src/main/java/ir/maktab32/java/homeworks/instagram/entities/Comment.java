@@ -23,4 +23,14 @@ public class Comment {
 
     @ManyToOne
     private Post post;
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", msg='" + msg + '\'' +
+                ", writer=" + writer.getUsername() +
+                ", post id=" + post.getId() +
+                '}';
+    }
 }

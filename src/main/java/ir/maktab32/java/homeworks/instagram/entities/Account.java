@@ -17,7 +17,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)
@@ -28,35 +28,44 @@ public class Account {
 
     @ManyToMany
     @JoinTable(name = "follow_tbl", joinColumns = @JoinColumn(name = "following_id"), inverseJoinColumns = @JoinColumn(name = "follower_id"))
-    private List<Account> followers = new ArrayList<>();
+    private List<Account> followers = new ArrayList<>() ;
 
-    @ManyToMany
-    @JoinTable(name = "follow_tbl", joinColumns = @JoinColumn(name = "follower_id"), inverseJoinColumns = @JoinColumn(name = "following_id"))
-    private List<Account> followings = new ArrayList<>();
+    @ManyToMany(mappedBy = "followers")
+//    @JoinTable(name = "follow_tbl" ,joinColumns = @JoinColumn(name = "follower_id"), inverseJoinColumns = @JoinColumn(name = "following_id"))
+    private List<Account> followings = new ArrayList<>() ;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    private List<Post> posts = new ArrayList<>();
+    @OneToMany(mappedBy = "owner")
+    private List<Post> posts = new ArrayList<>() ;
 
     @ManyToMany
     @JoinTable(name = "like_tbl", joinColumns = @JoinColumn(name = "liker_id"), inverseJoinColumns = @JoinColumn(name = "post_id"))
-    private List<Post> likedPosts = new ArrayList<>();
+    private List<Post> likedPosts = new ArrayList<>() ;
 
-    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
-    private List<Comment> comments;
+    @OneToMany(mappedBy = "writer")
+    private List<Comment> comments = new ArrayList<>() ;
 
 
     @Override
     public String toString() {
-        return "Account{" +
+        String result = "Account{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", accountImgSrc='" + accountImgSrc + '\'' +
-                ", followers=" + followers.size() +
-                ", followings=" + followings.size() +
-                ", posts=" + posts.size() +
-                ", likedPosts=" + likedPosts.size() +
+                ", followersCount=" + followers.size() +
+                ", followingsCount=" + followings.size() +
+                ", postsCount=" + posts.size() +
+                ", likedPostsCount=" + likedPosts.size() +
+                ", commentsCount=" + comments.size() +
                 '}';
+
+        result +="\nPosts of " + username +": (" + posts.size() + " Posts) \n";
+
+        for (Post i : posts) {
+            result += "Post Id: " + i.getId() + ", ImageSource: " + i.getPostImgSrc() + "\n";
+        }
+
+        return result;
     }
 }

@@ -30,8 +30,28 @@ public class Post {
     @JoinTable(name = "like_tbl", joinColumns = @JoinColumn(name = "post_id"), inverseJoinColumns = @JoinColumn(name = "liker_id"))
     private List<Account> likers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private List<Comment> comments;
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments = new ArrayList<>();
 
 
+    @Override
+    public String toString() {
+        String result = "Post{" +
+                "id=" + id +
+                ", postImgSrc='" + postImgSrc + '\'' +
+                ", description='" + description + '\'' +
+                ", owner=" + owner.getUsername() +
+                ", likesCount=" + likers.size() +
+                ", commentsCount=" + comments.size() +
+                '}';
+
+
+        result +="\nComments: ("+ comments.size() +" Comments) \n";
+
+        for (Comment i : comments) {
+            result += i.getWriter().getUsername() + ": " + i.getMsg() + "\n";
+        }
+
+        return result;
+    }
 }
