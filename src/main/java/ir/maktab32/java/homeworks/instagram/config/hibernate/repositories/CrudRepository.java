@@ -11,9 +11,7 @@ public abstract class CrudRepository<Entity, ID extends Serializable> {
 
     protected abstract Class<Entity> getEntityClass();
 
-    protected Session getSession(){
-        return HibernateUtil.getSession();
-    }
+    protected abstract Session getSession();
 
     public Entity save(Entity entity){
         getSession().beginTransaction();

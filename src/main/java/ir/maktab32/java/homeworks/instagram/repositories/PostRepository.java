@@ -1,7 +1,9 @@
 package ir.maktab32.java.homeworks.instagram.repositories;
 
+import ir.maktab32.java.homeworks.instagram.config.hibernate.HibernateUtil;
 import ir.maktab32.java.homeworks.instagram.config.hibernate.repositories.CrudRepository;
 import ir.maktab32.java.homeworks.instagram.entities.Post;
+import org.hibernate.Session;
 
 import java.util.List;
 
@@ -9,6 +11,11 @@ public class PostRepository extends CrudRepository<Post, Long> {
     @Override
     protected Class<Post> getEntityClass() {
         return Post.class;
+    }
+
+    @Override
+    protected Session getSession() {
+        return HibernateUtil.getSession();
     }
 
     private static PostRepository postRepository;
