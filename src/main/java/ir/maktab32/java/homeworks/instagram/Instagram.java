@@ -19,46 +19,62 @@ import java.util.*;
 
 public class Instagram {
     public static void main(String[] args) {
+
+        //Connecting to Database at First
+        AccountRepository.getInstance().findById(1L);
+
         Scanner scanner = new Scanner(System.in);
+
         String command = "";
+
         while (!command.equals("exit")){
+
             System.out.println("Input Command: (m -> Menu)");
             command = scanner.nextLine();
 
-            if (command.equals("m")){
+            if (command.equalsIgnoreCase("m")){
                 CommandsMenu.execute();
             }
-            else if (command.equals("sign up")){
-                System.out.print("Username: ");
-                String username = scanner.nextLine();
-                System.out.print("Password: ");
-                String password = scanner.nextLine();
-                System.out.print("Screen Name: ");
-                String screenName = scanner.nextLine();
-                System.out.print("Account Image Source: ");
-                String imgSrc = scanner.nextLine();
-                
-                new AccountDaoImpl().add(username,password,screenName,imgSrc);
+            else if (command.equalsIgnoreCase("sign up")){
+                if (AuthenticationService.getInstance().getSignedInUser() == null) {
+                    System.out.print("Username: ");
+                    String username = scanner.nextLine();
+                    System.out.print("Password: ");
+                    String password = scanner.nextLine();
+                    System.out.print("Screen Name: ");
+                    String screenName = scanner.nextLine();
+                    System.out.print("Account Image Source: ");
+                    String imgSrc = scanner.nextLine();
+
+                    new AccountDaoImpl().add(username, password, screenName, imgSrc);
+                }
+                else {
+                    System.out.println("Sign Out First!");
+                }
             }
-            else if (command.equals("sign in")){
-                System.out.print("Username: ");
-                String username = scanner.nextLine();
-                System.out.print("Password: ");
-                String password = scanner.nextLine();
-                new AccountDaoImpl().signIn(username, password);
+            else if (command.equalsIgnoreCase("sign in")){
+                if (AuthenticationService.getInstance().getSignedInUser() == null) {
+                    System.out.print("Username: ");
+                    String username = scanner.nextLine();
+                    System.out.print("Password: ");
+                    String password = scanner.nextLine();
+                    new AccountDaoImpl().signIn(username, password);
+                }
+                else
+                    System.out.println("Sign Out First!");
 
             }
-            else if (command.equals("sign out")){
+            else if (command.equalsIgnoreCase("sign out")){
                 new AccountDaoImpl().signOut();
             }
-            else if (command.equals("my account")){
+            else if (command.equalsIgnoreCase("my account")){
                 Account currentAccount = AuthenticationService.getInstance().getSignedInUser();
                 if (currentAccount != null)
                     System.out.println(currentAccount);
                 else
                     System.out.println("Sign In First!");
             }
-            else if (command.equals("edit account")){
+            else if (command.equalsIgnoreCase("edit account")){
                 System.out.print("Username: ");
                 String username = scanner.nextLine();
                 System.out.print("Password: ");
@@ -71,14 +87,14 @@ public class Instagram {
                 if (editedAccount != null)
                     System.out.println(editedAccount);
             }
-            else if (command.equals("delete account")){
+            else if (command.equalsIgnoreCase("delete account")){
                 Account currentUser = AuthenticationService.getInstance().getSignedInUser();
                 if (currentUser != null)
                     new AccountDaoImpl().deleteById(currentUser.getId());
                 else
                     System.out.println("Sign In First!");
             }
-            else if (command.equals("search account by id")){
+            else if (command.equalsIgnoreCase("search account by id")){
                 System.out.print("Account Id: ");
                 String id = scanner.nextLine();
                 if (IsNumeric.execute(id)) {
@@ -90,7 +106,7 @@ public class Instagram {
                     System.out.println("invalid Account Id!");
                 }
             }
-            else if (command.equals("search account by username")){
+            else if (command.equalsIgnoreCase("search account by username")){
                 System.out.print("Account Username: ");
                 String username = scanner.nextLine();
                 List<Account> accounts = new AccountDaoImpl().findByUsername(username);
@@ -99,7 +115,7 @@ public class Instagram {
                 else if (accounts != null && accounts.size() == 0)
                     System.out.println("No Matches!");
             }
-            else if (command.equals("add post")){
+            else if (command.equalsIgnoreCase("add post")){
                 System.out.print("Image Source: ");
                 String imgSrc = scanner.nextLine();
                 System.out.print("Description: ");
@@ -108,7 +124,7 @@ public class Instagram {
                 if (post != null)
                     System.out.println(post);
             }
-            else if (command.equals("edit post")){
+            else if (command.equalsIgnoreCase("edit post")){
                 System.out.print("Post Id: ");
                 String id = scanner.nextLine();
                 if (IsNumeric.execute(id)) {
@@ -125,14 +141,14 @@ public class Instagram {
                     System.out.println("Invalid Id!");
                 }
             }
-            else if (command.equals("my posts")){
+            else if (command.equalsIgnoreCase("my posts")){
                 Account currentUser = AuthenticationService.getInstance().getSignedInUser();
                 if (currentUser != null && currentUser.getPosts().size() > 0)
                     currentUser.getPosts().forEach(System.out::println);
                 else
                     System.out.println("No Result!");
             }
-            else if (command.equals("search post by Id")){
+            else if (command.equalsIgnoreCase("search post by id")){
                 System.out.print("Post Id: ");
                 String id = scanner.nextLine();
                 if (IsNumeric.execute(id)) {
@@ -141,14 +157,14 @@ public class Instagram {
                         System.out.println(post);
                 }
             }
-            else if (command.equals("delete post")){
+            else if (command.equalsIgnoreCase("delete post")){
                 System.out.print("Post Id: ");
                 String id = scanner.nextLine();
                 if (IsNumeric.execute(id)) {
                     new PostDaoImpl().deleteById(Long.parseLong(id));
                 }
             }
-            else if (command.equals("search posts by account")){
+            else if (command.equalsIgnoreCase("search posts by account")){
                 System.out.print("Input Account Id or Username: ");
                 String input = scanner.nextLine();
                 Long resultId = null;
@@ -173,7 +189,7 @@ public class Instagram {
                     System.out.println("Invalid Input!");
                 }
             }
-            else if (command.equals("follow")){
+            else if (command.equalsIgnoreCase("follow")){
                 System.out.print("Input Account Id or Username: ");
                 String input = scanner.nextLine();
                 Long resultId = null;
@@ -198,7 +214,7 @@ public class Instagram {
                     System.out.println("Invalid Input!");
                 }
             }
-            else if (command.equals("unfollow")){
+            else if (command.equalsIgnoreCase("unfollow")){
                 System.out.print("Input Account Id or Username: ");
                 String input = scanner.nextLine();
                 Long resultId = null;
@@ -223,7 +239,33 @@ public class Instagram {
                     System.out.println("Invalid Input!");
                 }
             }
-            else if (command.equals("like")){
+            else if (command.equalsIgnoreCase("my followers")){
+                Account currentUser = AuthenticationService.getInstance().getSignedInUser();
+                if (currentUser != null){
+                    if (currentUser.getFollowers().size() > 0){
+                        System.out.println("Your Followers: ");
+                        currentUser.getFollowers().forEach(System.out::println);
+                    }
+                    else
+                        System.out.println("You Don't Have Followers!");
+                }
+                else
+                    System.out.println("Sign In First!");
+            }
+            else if (command.equalsIgnoreCase("my followings")){
+                Account currentUser = AuthenticationService.getInstance().getSignedInUser();
+                if (currentUser != null){
+                    if (currentUser.getFollowings().size() > 0){
+                        System.out.println("Your Followings: ");
+                        currentUser.getFollowings().forEach(System.out::println);
+                    }
+                    else
+                        System.out.println("You Don't Have Followings!");
+                }
+                else
+                    System.out.println("Sign In First!");
+            }
+            else if (command.equalsIgnoreCase("like")){
                 System.out.print("Input Post Id to Like: ");
                 String id = scanner.nextLine();
                 if (IsNumeric.execute(id)) {
@@ -232,7 +274,21 @@ public class Instagram {
                 else
                     System.out.println("Invalid Post Id!");
             }
-            else if (command.equals("sort posts by like")){
+            else if (command.equalsIgnoreCase("get post likers")){
+                System.out.print("Post Id: ");
+                String id = scanner.nextLine();
+                if (IsNumeric.execute(id)){
+                    Post post = new PostDaoImpl().findById(Long.parseLong(id));
+                    if (post != null && post.getLikers().size() > 0){
+                        System.out.println("Accounts Who Liked Post(Id: "+ id +")");
+                        post.getLikers().forEach(System.out::println);
+                    }
+
+                }
+                else
+                    System.out.println("Invalid Post Id!");
+            }
+            else if (command.equalsIgnoreCase("sort posts by like")){
                 List<Post> sortedPosts = new PostDaoImpl().findAllSortedByLikes();
                 if (sortedPosts.size() > 0){
                     sortedPosts.forEach(System.out::println);
@@ -240,7 +296,7 @@ public class Instagram {
                 else
                     System.out.println("There is No Posts!");
             }
-            else if (command.equals("add comment")){
+            else if (command.equalsIgnoreCase("add comment")){
                 System.out.print("Post Id: ");
                 String id = scanner.nextLine();
                 if (IsNumeric.execute(id)) {
@@ -255,7 +311,7 @@ public class Instagram {
                     System.out.println("Invalid Post Id!");
                 }
             }
-            else if (command.equals("delete comment")){
+            else if (command.equalsIgnoreCase("delete comment")){
                 System.out.print("Comment Id: ");
                 String id = scanner.nextLine();
                 if (IsNumeric.execute(id)){
@@ -264,14 +320,14 @@ public class Instagram {
                 else
                     System.out.println("Invalid Comment Id!");
             }
-            else if (command.equals("exit")){
+            else if (command.equalsIgnoreCase("exit")){
                 System.out.println("Good Bye!");
             }
             else {
                 System.out.println("Invalid Command!");
             }
 
-            
+
         }
     }
 }

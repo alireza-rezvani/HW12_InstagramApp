@@ -3,6 +3,7 @@ package ir.maktab32.java.homeworks.instagram.features.impl;
 import ir.maktab32.java.homeworks.instagram.entities.Account;
 import ir.maktab32.java.homeworks.instagram.entities.Comment;
 import ir.maktab32.java.homeworks.instagram.features.dao.CommentDao;
+import ir.maktab32.java.homeworks.instagram.repositories.AccountRepository;
 import ir.maktab32.java.homeworks.instagram.repositories.CommentRepository;
 import ir.maktab32.java.homeworks.instagram.repositories.PostRepository;
 import ir.maktab32.java.homeworks.instagram.share.AuthenticationService;
@@ -38,6 +39,9 @@ public class CommentDaoImpl implements CommentDao {
             AuthenticationService.getInstance().getSignedInUser().getComments().remove(CommentRepository.getInstance().findById(id));
             CommentRepository.getInstance().findById(id).getPost().getComments().remove(CommentRepository.getInstance().findById(id));
             CommentRepository.getInstance().removeById(id);
+            AccountRepository.getInstance().update(AuthenticationService.getInstance().getSignedInUser());
+            PostRepository.getInstance().update(CommentRepository.getInstance().findById(id).getPost());
+
             System.out.println("Comment Deleted!");
         }
         else {

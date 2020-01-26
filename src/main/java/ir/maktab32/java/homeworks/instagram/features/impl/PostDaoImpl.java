@@ -112,16 +112,19 @@ public class PostDaoImpl implements PostDao {
     public void likeById(Long id) {
         Account currentUser = AuthenticationService.getInstance().getSignedInUser();
         if (currentUser != null){
-            if (!currentUser.getLikedPosts().contains(PostRepository.getInstance().findById(id))) {
-                Post post = PostRepository.getInstance().findById(id);
-                post.getLikers().add(currentUser);
-                PostRepository.getInstance().update(post);
-                currentUser.getLikedPosts().add(post);
-                System.out.println("Liked Succesfully!");
+            if (PostRepository.getInstance().isExisting(id)) {
+                if (!currentUser.getLikedPosts().contains(PostRepository.getInstance().findById(id))) {
+                    Post post = PostRepository.getInstance().findById(id);
+                    post.getLikers().add(currentUser);
+                    PostRepository.getInstance().update(post);
+                    currentUser.getLikedPosts().add(post);
+                    System.out.println("Liked Succesfully!");
+                } else {
+                    System.out.println("You Have Liked This Post Already!");
+                }
             }
-            else {
-                System.out.println("You Have Liked This Post Already!");
-            }
+            else
+                System.out.println("Invalid Post Id!");
         }
         else {
             System.out.println("Like Failed!\nSign In First!");

@@ -49,7 +49,7 @@ public class Post {
         result +="\nComments: ("+ comments.size() +" Comments) \n";
 
         for (Comment i : comments) {
-            result += i.getWriter().getUsername() + ": " + i.getMsg() + "\n";
+            result += i.getWriter().getUsername() + ": " + i.getMsg() + " (Comment Id: " + i.getId() + ")" + "\n";
         }
 
         return result;

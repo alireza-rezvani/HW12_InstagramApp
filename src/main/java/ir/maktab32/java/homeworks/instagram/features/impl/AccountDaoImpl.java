@@ -141,22 +141,52 @@ public class AccountDaoImpl implements AccountDao {
         if (deletingValidation(id)){
             Account account = AccountRepository.getInstance().findById(id);
 
-            int commentsSize = account.getComments().size();
-            if (commentsSize > 0){
-                for (int i = commentsSize - 1; i >= 0; i--){
-                    account.getComments().remove(account.getComments().get(i));
+//            int commentsSize = account.getComments().size();
+//            if (commentsSize > 0){
+//                for (int i = commentsSize - 1; i >= 0; i--){
+//                    account.getComments().remove(account.getComments().get(i));
+//                }
+//                CommentRepository.getInstance().deleteCommentsByOwnerId(id);
+//            }
+//
+//            int postsSize = account.getPosts().size();
+//            if (postsSize > 0) {
+//                for (int i = postsSize - 1; i >= 0; i--){
+//                    account.getPosts().remove(account.getPosts().get(i));
+//                }
+//                PostRepository.getInstance().deletePostsByOwnerId(id);
+//            }
+
+
+            int likedPostsSize = account.getLikedPosts().size();
+            if (likedPostsSize > 0){
+                for (int i = likedPostsSize - 1; i >= 0; i--){
+                    account.getLikedPosts().get(i).getLikers().remove(account);
+                    PostRepository.getInstance().update(account.getLikedPosts().get(i));
+                    account.getLikedPosts().remove(account.getLikedPosts().get(i));
                 }
-                CommentRepository.getInstance().deleteCommentsByOwnerId(id);
+                account = AccountRepository.getInstance().update(account);
             }
+
+
+            int commentSize = account.getComments().size();
+            if (commentSize > 0){
+                for (int i = commentSize - 1; i >= 0; i--){
+                    account.getComments().remove(account.getComments().get(i));
+                    CommentRepository.getInstance().deleteCommentsByOwnerId(account.getId());
+                }
+                account = AccountRepository.getInstance().update(account);
+            }
+
 
             int postsSize = account.getPosts().size();
             if (postsSize > 0) {
                 for (int i = postsSize - 1; i >= 0; i--){
-                    account.getPosts().remove(account.getPosts().get(i));
+                    new PostDaoImpl().deleteById(account.getPosts().get(i).getId());
                 }
-                PostRepository.getInstance().deletePostsByOwnerId(id);
             }
 
+            account = AccountRepository.getInstance().update(account);
 
             List<Account> followers = AccountRepository.getInstance().findById(id).getFollowers();
             List<Account> followings = AccountRepository.getInstance().findById(id).getFollowings();
@@ -177,6 +207,7 @@ public class AccountDaoImpl implements AccountDao {
 
             AccountRepository.getInstance().update(account);
             AccountRepository.getInstance().removeById(id);
+            AuthenticationService.getInstance().setSignedInUser(null);
             System.out.println("Deleted Successfully!");
         }
         else
@@ -239,7 +270,7 @@ public class AccountDaoImpl implements AccountDao {
             System.out.println("Sign In First!");
         }
         else if (username == null || username.isEmpty()
-                || !AccountRepository.getInstance().isUsernameExisting(username)){
+                || (AccountRepository.getInstance().isUsernameExisting(username) && !currentUser.getUsername().equals(username))){
             result = false;
             System.out.println("Invalid Username!");
         }
