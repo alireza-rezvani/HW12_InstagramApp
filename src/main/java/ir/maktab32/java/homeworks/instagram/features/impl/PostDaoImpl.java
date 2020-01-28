@@ -9,7 +9,6 @@ import ir.maktab32.java.homeworks.instagram.repositories.PostRepository;
 import ir.maktab32.java.homeworks.instagram.share.AuthenticationService;
 import ir.maktab32.java.homeworks.instagram.utilities.PostComparatorByLikes;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 

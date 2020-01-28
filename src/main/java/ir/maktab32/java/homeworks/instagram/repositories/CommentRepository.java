@@ -3,7 +3,6 @@ package ir.maktab32.java.homeworks.instagram.repositories;
 import ir.maktab32.java.homeworks.instagram.config.hibernate.HibernateUtil;
 import ir.maktab32.java.homeworks.instagram.config.hibernate.repositories.CrudRepository;
 import ir.maktab32.java.homeworks.instagram.entities.Comment;
-import ir.maktab32.java.homeworks.instagram.entities.Post;
 import org.hibernate.Session;
 
 import java.util.List;

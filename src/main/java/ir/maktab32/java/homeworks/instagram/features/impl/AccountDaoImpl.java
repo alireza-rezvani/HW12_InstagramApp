@@ -141,23 +141,6 @@ public class AccountDaoImpl implements AccountDao {
         if (deletingValidation(id)){
             Account account = AccountRepository.getInstance().findById(id);
 
-//            int commentsSize = account.getComments().size();
-//            if (commentsSize > 0){
-//                for (int i = commentsSize - 1; i >= 0; i--){
-//                    account.getComments().remove(account.getComments().get(i));
-//                }
-//                CommentRepository.getInstance().deleteCommentsByOwnerId(id);
-//            }
-//
-//            int postsSize = account.getPosts().size();
-//            if (postsSize > 0) {
-//                for (int i = postsSize - 1; i >= 0; i--){
-//                    account.getPosts().remove(account.getPosts().get(i));
-//                }
-//                PostRepository.getInstance().deletePostsByOwnerId(id);
-//            }
-
-
             int likedPostsSize = account.getLikedPosts().size();
             if (likedPostsSize > 0){
                 for (int i = likedPostsSize - 1; i >= 0; i--){

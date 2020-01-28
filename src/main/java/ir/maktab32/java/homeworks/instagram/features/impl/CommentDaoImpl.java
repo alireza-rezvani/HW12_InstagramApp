@@ -8,7 +8,6 @@ import ir.maktab32.java.homeworks.instagram.repositories.CommentRepository;
 import ir.maktab32.java.homeworks.instagram.repositories.PostRepository;
 import ir.maktab32.java.homeworks.instagram.share.AuthenticationService;
 
-import java.util.List;
 
 public class CommentDaoImpl implements CommentDao {
     @Override

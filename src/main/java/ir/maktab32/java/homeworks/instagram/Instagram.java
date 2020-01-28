@@ -1,17 +1,13 @@
 package ir.maktab32.java.homeworks.instagram;
 
-import ir.maktab32.java.homeworks.instagram.config.hibernate.HibernateUtil;
 import ir.maktab32.java.homeworks.instagram.entities.Account;
 import ir.maktab32.java.homeworks.instagram.entities.Comment;
 import ir.maktab32.java.homeworks.instagram.entities.Post;
-import ir.maktab32.java.homeworks.instagram.features.dao.AccountDao;
 import ir.maktab32.java.homeworks.instagram.features.impl.AccountDaoImpl;
 import ir.maktab32.java.homeworks.instagram.features.impl.CommentDaoImpl;
 import ir.maktab32.java.homeworks.instagram.features.impl.PostDaoImpl;
 import ir.maktab32.java.homeworks.instagram.menu.CommandsMenu;
 import ir.maktab32.java.homeworks.instagram.repositories.AccountRepository;
-import ir.maktab32.java.homeworks.instagram.repositories.CommentRepository;
-import ir.maktab32.java.homeworks.instagram.repositories.PostRepository;
 import ir.maktab32.java.homeworks.instagram.share.AuthenticationService;
 import ir.maktab32.java.homeworks.instagram.utilities.IsNumeric;
 

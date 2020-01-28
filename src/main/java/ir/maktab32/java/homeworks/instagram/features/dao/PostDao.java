@@ -1,6 +1,5 @@
 package ir.maktab32.java.homeworks.instagram.features.dao;
 
-import ir.maktab32.java.homeworks.instagram.entities.Account;
 import ir.maktab32.java.homeworks.instagram.entities.Post;
 
 import java.util.List;
